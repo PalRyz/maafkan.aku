@@ -1,0 +1,175 @@
+<!DOCTYPE html><html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Maafkan Aku, Sayang 💔</title>
+  <style>
+    body {
+      background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      height: 100vh;
+      margin: 0;
+      padding-top: 40px;
+      text-align: center;
+      overflow: hidden;
+    }#floatingPlay {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background: #ff6b81;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 55px;
+  height: 55px;
+  font-size: 1.5em;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+  z-index: 99;
+  transition: transform 0.3s ease;
+}
+#floatingPlay:hover {
+  background: #ff4757;
+  transform: scale(1.1);
+}
+
+h1 {
+  font-size: 2.8em;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+}
+
+#pesan, #lanjutan, #typing-text {
+  font-size: 1.4em;
+  max-width: 700px;
+  line-height: 1.8;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+}
+
+.btn-group button, a.button {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 30px;
+  background: #ff6b81;
+  color: white;
+  font-size: 1em;
+  cursor: pointer;
+  margin: 10px;
+  transition: 0.3s;
+}
+.btn-group button:hover, a.button:hover {
+  background: #ff4757;
+}
+
+#loading {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.6);
+  padding: 20px 30px;
+  border-radius: 15px;
+  text-align: center;
+  z-index: 9999;
+  display: none;
+}
+
+.hidden { display: none; }
+
+  </style>
+</head>
+<body>
+  <h1 id="judul">Maafkan Aku, Sayang...</h1>
+  <p id="pesan">Aku sadar aku salah. Aku udah buat kamu kecewa dan sakit hati.<br> Tapi aku benar-benar tulus minta maaf dari hati yang paling dalam.<br> Aku nggak mau kehilangan kamu, Sayang...<br> Tolong beri aku satu kesempatan lagi. 💌</p>  <div id="typing-text" class="blink"></div>
+  <div class="btn-group" id="tombol-awal">
+    <button onclick="maafkan()">Iya, Aku Maafkan ❤️</button>
+    <button onclick="tidakMaafkan()">Nggak, Aku Masih Kecewa 💔</button>
+  </div>  <p id="lanjutan" class="hidden"></p>
+  <div class="btn-group hidden" id="tombol-chat">
+    <a href="https://wa.me/6289526842547?text=Aku%20udah%20lihat%20permintaan%20maafmu..." class="button" target="_blank">Chat Aku di WhatsApp 💬</a>
+  </div>  <div id="loading">
+    <img src="https://i.gifer.com/7efs.gif" alt="Loading..." style="width:120px; margin-bottom: 20px;" />
+    <p>Mohon tunggu sebentar ya... 💭</p>
+  </div><button id="floatingPlay" onclick="playMusic()">🎧</button>
+
+  <audio id="bgm" loop>
+    <source src="https://raw.githubusercontent.com/Nazir99inf/database/main/uploads/1751334207545.mp3" type="audio/mpeg" />
+  </audio>
+  <audio id="sadSound">
+    <source src="https://raw.githubusercontent.com/Nazir99inf/database/main/uploads/1751336434697.mp3" type="audio/mpeg" />
+  </audio>  <script>
+    let namaPacar = new URLSearchParams(location.search).get("nama") || "Sayang";
+    document.getElementById("judul").textContent = `Maafkan Aku, ${namaPacar}...`;
+
+    function playMusic() {
+      document.getElementById("sadSound").pause();
+      const music = document.getElementById("bgm");
+      music.currentTime = 0;
+      music.play();
+      document.getElementById("floatingPlay").style.display = "none";
+    }
+
+    function showLoading(callback) {
+      const loading = document.getElementById("loading");
+      loading.style.display = "block";
+      setTimeout(() => {
+        loading.style.display = "none";
+        callback();
+      }, 2200);
+    }
+
+    function maafkan() {
+      showLoading(() => {
+        document.getElementById("pesan").style.display = "none";
+        document.getElementById("tombol-awal").classList.add("hidden");
+        document.getElementById("tombol-chat").classList.remove("hidden");
+        const lanjutan = document.getElementById("lanjutan");
+        lanjutan.classList.remove("hidden");
+        typeTextMaafkan();
+      });
+    }
+
+    function tidakMaafkan() {
+      showLoading(() => {
+        document.getElementById("bgm").pause();
+        document.getElementById("sadSound").currentTime = 0;
+        document.getElementById("sadSound").play();
+        document.getElementById("pesan").style.display = "none";
+        document.getElementById("tombol-awal").classList.add("hidden");
+        document.getElementById("tombol-chat").classList.remove("hidden");
+        const lanjutan = document.getElementById("lanjutan");
+        lanjutan.classList.remove("hidden");
+        typeTextSad();
+      });
+    }
+
+    function typeTextSad() {
+      const text = `🥺 Aku ngerti kok ${namaPacar}...\nTapi aku akan terus berusaha buktiin sayangku ke kamu.\nSuatu hari kamu pasti buka hati buat maafin aku...`;
+      let i = 0;
+      const lanjutan = document.getElementById("lanjutan");
+      lanjutan.innerHTML = '';
+      const interval = setInterval(() => {
+        lanjutan.innerHTML += text.charAt(i);
+        i++;
+        if (i >= text.length) clearInterval(interval);
+      }, 50);
+    }
+
+    function typeTextMaafkan() {
+      const text = `😭 Makasih ya ${namaPacar}, kamu udah maafin aku...\nAku janji nggak akan ngulangin lagi.\nAku sayang banget sama kamu ❤️`;
+      let i = 0;
+      const lanjutan = document.getElementById("lanjutan");
+      lanjutan.innerHTML = '';
+      const interval = setInterval(() => {
+        lanjutan.innerHTML += text.charAt(i);
+        i++;
+        if (i >= text.length) clearInterval(interval);
+      }, 50);
+    }
+  </script></body>
+</html>
